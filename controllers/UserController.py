@@ -5,14 +5,14 @@ from fastapi_utils.cbv import cbv
 from fastapi_utils.inferring_router import InferringRouter
 from services.UserService import UserService
 
-user_controller_router = InferringRouter()
+router_user = InferringRouter()
 
-@cbv(user_controller_router)
+@cbv(router_user)
 class UserController:
     def __init__(self):
         self.userService = UserService()
 
-    @user_controller_router.post('register')
+    @router_user.post('/register')
     def register(self, user: User):
         try: 
             if '@' not in user.username:
@@ -26,7 +26,7 @@ class UserController:
         except Exception as e:
             raise HTTPException(status_code=e.status_code, detail=str(e.detail))
             
-    @user_controller_router.post('/token')
+    @router_user.post('/token')
     def get_access_token(self, form_data: OAuth2PasswordRequestForm = Depends()):
         try:
             access_token = self.userService.get_access_token(form_data)
@@ -36,7 +36,7 @@ class UserController:
         except Exception as e:
             raise HTTPException(status_code=e.status_code, detail=str(e.detail))
             
-    @user_controller_router.post('/logout')
+    @router_user.post('/logout')
     def logout(self, token: str = Header(None)):
         try:
             if token is None:

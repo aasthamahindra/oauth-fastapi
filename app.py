@@ -4,13 +4,13 @@ from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 import os
 from dotenv import load_dotenv
-from controllers.UserController import user_controller_router
+from controllers.UserController import router_user
 
 app = FastAPI()
 
 load_dotenv(os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env'))
 
-app.include_router(user_controller_router, prefix='/users', tags=['Users'])
+app.include_router(router_user, prefix='/users', tags=['Users'])
 
 # enable CORS middleware to allow requests from different origins
 app.add_middleware(
